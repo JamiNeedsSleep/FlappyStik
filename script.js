@@ -2,11 +2,11 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 // Game Constants
-const GRAVITY = 0.3;
+const GRAVITY = 0.42;
 const JUMP = 6.0;
 const SPEED = 3.5; 
 const PIPE_GAP = 140;
-const PIPE_WIDTH = 70;
+const PIPE_WIDTH = 90;
 const GROUND_HEIGHT = 80;
 
 // Game State
