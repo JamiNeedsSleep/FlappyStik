@@ -226,7 +226,7 @@ canvas {
     border: 1px solid var(--glass-border);
     border-radius: 50px;
     padding: 40px;
-    width: 550px;
+    width: 420px;
     max-width: 90vw;
     box-sizing: border-box;
     display: flex;
