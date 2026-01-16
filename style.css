@@ -113,7 +113,7 @@ canvas {
     pointer-events: auto;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    cursor: pointer; /* UX: Indicate clickable */
+    cursor: pointer;
 }
 
 .screen.active {
@@ -176,7 +176,7 @@ canvas {
     padding: 5px;
     display: flex;
     gap: 5px;
-    pointer-events: auto; /* Ensure clicks pass through */
+    pointer-events: auto;
 }
 
 .diff-btn {
@@ -232,7 +232,7 @@ canvas {
 
 .game-over-container .logo {
     margin-bottom: 30px;
-    font-size: 4.5rem !important; /* Slightly smaller to fit */
+    font-size: 4.5rem !important;
 }
 
 .game-over-container .score-card {
@@ -247,10 +247,10 @@ canvas {
 }
 
 .game-over-container .difficulty-selector {
-    background: rgba(255, 255, 255, 0.05); /* Subtle inner bg */
+    background: rgba(255, 255, 255, 0.05);
     border: none;
     margin-top: 0;
-    margin-bottom: 30px !important; /* Force margin */
+    margin-bottom: 30px !important;
 }
 
 .game-over-container .instruction-box {

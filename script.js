@@ -340,6 +340,10 @@ function drawBackground() {
     }
 }
 
+let lastTime = 0;
+let accumulator = 0;
+const STEP = 1000 / 60;
+
 function init() {
     resize();
     bird.y = canvas.height / 2;
@@ -361,7 +365,9 @@ function init() {
     if (gameLoopId) cancelAnimationFrame(gameLoopId);
     if (menuLoopId) cancelAnimationFrame(menuLoopId);
     
-    menuLoop();
+    lastTime = performance.now();
+    accumulator = 0;
+    menuLoopId = requestAnimationFrame(menuLoop);
 }
 
 function startGame() {
@@ -374,7 +380,9 @@ function startGame() {
     if (menuLoopId) cancelAnimationFrame(menuLoopId);
     if (gameLoopId) cancelAnimationFrame(gameLoopId);
     
-    loop();
+    lastTime = performance.now();
+    accumulator = 0;
+    gameLoopId = requestAnimationFrame(loop);
 }
 
 function gameOver() {
@@ -393,21 +401,33 @@ function gameOver() {
     if (gameLoopId) cancelAnimationFrame(gameLoopId);
 }
 
-function loop() {
+function loop(timestamp) {
     if (gameState !== 'PLAYING') return;
-    bird.update();
     
-    if (frames % PIPE_SPAWN_RATE === 0) {
-        let prevH = pipes.length > 0 ? pipes[pipes.length - 1].topHeight : null;
-        pipes.push(new Pipe(prevH));
-    }
+    const deltaTime = timestamp - lastTime;
+    lastTime = timestamp;
+    accumulator += deltaTime;
     
-    for (let i = 0; i < pipes.length; i++) {
-        pipes[i].update();
-        if (pipes[i].x + pipes[i].w < 0) {
-            pipes.splice(i, 1);
-            i--;
+    if (accumulator > 1000) accumulator = 1000;
+
+    while (accumulator >= STEP) {
+        bird.update();
+        
+        if (frames % PIPE_SPAWN_RATE === 0) {
+            let prevH = pipes.length > 0 ? pipes[pipes.length - 1].topHeight : null;
+            pipes.push(new Pipe(prevH));
         }
+        
+        for (let i = 0; i < pipes.length; i++) {
+            pipes[i].update();
+            if (pipes[i].x + pipes[i].w < 0) {
+                pipes.splice(i, 1);
+                i--;
+            }
+        }
+        
+        frames++;
+        accumulator -= STEP;
     }
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -416,18 +436,29 @@ function loop() {
     ground.draw();
     bird.draw();
     
-    frames++;
     gameLoopId = requestAnimationFrame(loop);
 }
 
-function menuLoop() {
+function menuLoop(timestamp) {
     if (gameState === 'PLAYING') return;
+    
+    const deltaTime = timestamp - lastTime;
+    lastTime = timestamp;
+    accumulator += deltaTime;
+
+    if (accumulator > 1000) accumulator = 1000;
+
+    while (accumulator >= STEP) {
+        bird.y = (canvas.height / 2) + Math.sin(frames * 0.1) * 10;
+        frames++;
+        accumulator -= STEP;
+    }
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBackground();
     ground.draw();
-    bird.y = (canvas.height / 2) + Math.sin(frames * 0.1) * 10;
     bird.draw();
-    frames++;
+    
     menuLoopId = requestAnimationFrame(menuLoop);
 }
 
