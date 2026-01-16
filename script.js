@@ -603,17 +603,18 @@ class AudioController {
         osc.stop(time + duration);
     }
     playMP3(mp3sourcepath, loop = false) {
-        if (this.isMuted || this.gameOver) return;
+        if (this.isMuted || this.gameState === 'GAMEOVER' || this.isPlaying) return;
 
         const mp3Audio = new Audio(mp3sourcepath);
         mp3Audio.volume = 1;
         mp3Audio.loop = loop;
         mp3Audio.play();
-
+        this.isPlaying = true;
         const stopIfNeeded = () => {
             if (this.isMuted || this.gameState === 'GAMEOVER') {
                 mp3Audio.pause();
                 mp3Audio.currentTime = 0;
+                this.isPlaying = false;
                 document.removeEventListener("statecheck", stopIfNeeded);
             }
         };
