@@ -378,7 +378,7 @@ function init() {
 }
 
 function startGame() {
-    audioController.startMusic();
+    audioController.playMP3("https://incompetech.com/music/royalty-free/mp3-royaltyfree/Local%20Forecast%20-%20Elevator.mp3", true);
     gameState = 'PLAYING';
     document.getElementById('start-screen').classList.remove('active');
     document.getElementById('game-over-screen').classList.remove('active');
@@ -600,7 +600,15 @@ class AudioController {
         osc.start(time);
         osc.stop(time + duration);
     }
-
+    playMP3(mp3sourcepath, loop) {
+        var mp3Audio = new Audio()
+        mp3Audio.src = mp3sourcepath
+        mp3Audio.volume = 1
+        if (loop == true) {
+            mp3Audio.loop = true
+        }
+        mp3Audio.play()
+    }
     scheduler() {
         if (!this.isPlaying) return;
         const secondsPerBeat = 60.0 / this.tempo;
