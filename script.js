@@ -611,7 +611,7 @@ class AudioController {
         mp3Audio.play();
         this.isPlaying = true;
         const stopIfNeeded = () => {
-            if (this.isMuted || this.gameState === 'GAMEOVER') {
+            if (this.isMuted || this.gameState === 'GAMEOVER' || !this.isPlaying) {
                 mp3Audio.pause();
                 mp3Audio.currentTime = 0;
                 this.isPlaying = false;
