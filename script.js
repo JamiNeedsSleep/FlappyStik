@@ -490,7 +490,8 @@ window.addEventListener('resize', resize);
 window.addEventListener('keydown', handleAction);
 
 window.addEventListener('pointerdown', (e) => {
-    if (e.target.tagName === 'BUTTON') return;
+    if (e.target.closest('button')) return;
+    if (e.target.closest('.difficulty-selector')) return;
     handleAction(e);
 });
 
@@ -561,7 +562,6 @@ class AudioController {
         this.silentAudio.play().then(() => {
             this._unlocked = true;
         }).catch(e => {
-            console.log('Audio unlock failed', e);
         });
 
         if (this.ctx.state === 'suspended') {

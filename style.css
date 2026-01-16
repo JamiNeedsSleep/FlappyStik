@@ -172,24 +172,29 @@ canvas {
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
-    border-radius: 100px;
-    padding: 5px;
+    border-radius: 25px;
+    padding: 10px;
     display: flex;
-    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
     pointer-events: auto;
+    width: 100%;
+    max-width: 380px;
 }
 
 .diff-btn {
     background: transparent;
     border: none;
     color: rgba(255, 255, 255, 0.6);
-    padding: 10px 20px;
-    font-size: 0.9rem;
+    padding: 8px 16px;
+    font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
     border-radius: 50px;
     transition: all 0.2s;
     box-shadow: none;
+    flex: 1 1 auto;
 }
 
 .diff-btn:hover {
