@@ -11,6 +11,7 @@ let PIPE_VARIATION = 180;
 const GROUND_HEIGHT = 80;
 
 const DIFFICULTIES = {
+    'BABY': { gravity: 0.38, jump: 6.8, speed: 6.0, gap: 250, spawn: 140, variation: 60 },
     'EASY': { gravity: 0.38, jump: 6.8, speed: 3.0, gap: 170, spawn: 140, variation: 150 },
     'NORMAL': { gravity: 0.42, jump: 7.2, speed: 3.5, gap: 140, spawn: 115, variation: 230 },
     'HARD': { gravity: 0.48, jump: 7.5, speed: 4.5, gap: 110, spawn: 90, variation: 300 },
