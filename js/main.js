@@ -888,14 +888,17 @@ async function init() {
     
     document.getElementById('go-home-btn').addEventListener('click', (e) => {
         e.stopPropagation();
+        audioController.stopMusic();
         init();
     });
     document.getElementById('go-restart-btn')?.addEventListener('click', (e) => {
         e.stopPropagation();
         if (gameMode === 'LEVELS') {
+            audioController.stopMusic();
             startLevel(activeLevel);
         } else {
             init();
+            audioController.stopMusic();
             startGame();
         }
     });
