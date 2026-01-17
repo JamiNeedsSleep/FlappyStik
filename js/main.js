@@ -932,6 +932,8 @@ function startGame() {
     lastTime = performance.now();
     accumulator = 0;
     gameLoopId = requestAnimationFrame(loop);
+    audioController.stopMusic();
+    audioController.startMusic()
 }
 
 function gameOver() {
