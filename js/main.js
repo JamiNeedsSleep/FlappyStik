@@ -899,8 +899,8 @@ async function init() {
             audioController.stopMusic();
             startLevel(activeLevel);
         } else {
-            init();
             audioController.stopMusic();
+            init();
             startGame();
         }
     });
@@ -1064,6 +1064,7 @@ function menuLoop(timestamp) {
 function handleAction(e) {
     audioController.unlock();
     if (gameState === 'START' && !audioController.isPlaying) {
+         audioController.stopMusic();
          audioController.startTitleMusic(); 
     }
     
@@ -1081,8 +1082,8 @@ function handleAction(e) {
         if (gameMode === 'LEVELS') {
             startLevel(activeLevel);
         } else {
-            init();
             audioController.stopMusic();
+            init();
             startGame();
         }
     }
@@ -1103,13 +1104,14 @@ document.getElementById('game-wrapper').addEventListener('touchmove', (e) => {
 
 document.getElementById('go-home-btn').addEventListener('click', (e) => {
     e.stopPropagation();
+    audioController.stopMusic();
     init();
 });
 
 document.getElementById('go-restart-btn').addEventListener('click', (e) => {
     e.stopPropagation();
-    init();
     audioController.stopMusic();
+    init();
     startGame();
 });
 
