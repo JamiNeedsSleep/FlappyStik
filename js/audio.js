@@ -12,7 +12,7 @@ class AudioController {
 
         this.noteIndex = 0;
         this.nextNoteTime = 0;
-
+        this.musicCurrentlyPlaying = "";
         this.silentAudio = new Audio();
         this.silentAudio.src = 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADRm9vYmFyMjAwMAAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgAAAAAAAAAAAAAAJTSVNFAAAAEwAAADAuMS4wLjAgKDAuMS4wLjApAP/7bmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLuAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
         this.silentAudio.volume = 0.01;
@@ -23,7 +23,10 @@ class AudioController {
             GAME: [],
             VICTORY: []
         };
-        
+        this.customGameMusicID = "";
+        this.customMenuMusicID = "";
+        this.customMusicRepo = "";
+        this.soundbankReplaceLocal = [];
         this.currentMelody = [];
 
         this.muteBtn = document.getElementById('mute-btn');
@@ -102,7 +105,7 @@ class AudioController {
         osc.start(time);
         osc.stop(time + duration);
     }
-    async playMP3(custommusicrepo, musicid, loop = false) {
+    async playMP3(musicid, loop = false) {
         if (this.isMuted || this.gameState === 'GAMEOVER' || this.isPlaying) return;
         const custommusicrepof = await fetch(custommusicrepo);
         const custommusicrepo_parsed = await custommusicrepof.json();
@@ -123,13 +126,39 @@ class AudioController {
         document.addEventListener("statecheck", stopIfNeeded);
     }
     async enableCustomMusic(repo) {
+        this.customMusicRepo = repo
         const custommusicrepoff = await fetch(repo);
         const custommusicrepo_parsedf = await custommusicrepoff.json();
         const soundbank = custommusicrepo_parsedf["soundbank"];
+        this.replaceMusic = true
         for (const [id, sound] of Object.entries(soundbank)) {
             console.log("ID:", id);
             console.log("Name:", sound.Name);
+            this.soundbankReplaceLocal.push(id + "-" + sound.PlayInsteadOf)
         }
+        this.soundbankReplaceLocal.forEach((comstring) => {
+                var tempstr = comstring.split("-")
+                var tempID = tempstr[0]
+                var tempReplacer = tempstr[1]
+                if (tempReplacer == "background") {
+                    this.customGameMusicID = tempID
+                } else if (tempReplacer == "menu") {
+                    this.customMenuMusicID = tempID
+                }
+        })
+        const replaceIfNeeded = () => {
+            if (this.musicCurrentlyPlaying == "Game" && this.customGameMusicID != "") {
+                this.isPlaying = false
+                document.dispatchEvent(new Event("statecheck"));
+                this.playMP3(this.customGameMusicID, true)
+            } else if (this.musicCurrentlyPlaying == "Menu" && this.customMenuMusicID != "") {
+                this.isPlaying = false
+                document.dispatchEvent(new Event("statecheck"));
+                this.playMP3(this.customGameMusicID, true)
+            }
+        };
+
+        document.addEventListener("statecheckrep", replaceIfNeeded);
     }
     scheduler() {
         if (!this.isPlaying) return;
@@ -150,6 +179,11 @@ class AudioController {
         
         this.currentMelody = this.melodies.GAME;
         this.isPlaying = true;
+        this.musicCurrentlyPlaying = "Game"
+        document.dispatchEvent(new Event("statecheckrep"));
+        if (this.customGameMusicID != "") {
+            return;
+        }
         this.noteIndex = 0;
         this.nextNoteTime = this.ctx.currentTime + 0.1;
         this.scheduler();
@@ -162,6 +196,11 @@ class AudioController {
 
         this.currentMelody = this.melodies.TITLE;
         this.isPlaying = true;
+        this.musicCurrentlyPlaying = "Menu"
+        document.dispatchEvent(new Event("statecheckrep"));
+        if (this.customMenuMusicID != "") {
+            return;
+        }
         this.noteIndex = 0;
         this.nextNoteTime = this.ctx.currentTime + 0.1;
         this.scheduler();
