@@ -790,6 +790,25 @@ function renderPipesLayer() {
     for (const pipe of pipes) pipe.draw(pipeLayerCtx);
 }
 
+function drawPipesAndPowerups() {
+    renderPipesLayer();
+    if (pipeLayer) {
+        ctx.drawImage(pipeLayer, 0, 0);
+    } else {
+        for (const pipe of pipes) pipe.draw();
+    }
+    for (const p of powerups) p.draw();
+}
+
+function renderScene({ showPipes } = {}) {
+    drawBackground();
+    if (showPipes) {
+        drawPipesAndPowerups();
+    }
+    ground.draw();
+    bird.draw();
+}
+
 let lastTime = 0;
 let accumulator = 0;
 const STEP = 1000 / 60;
@@ -1011,16 +1030,7 @@ function loop(timestamp) {
     }
     
     updateFrameCaches();
-    drawBackground();
-    renderPipesLayer();
-    if (pipeLayer) {
-        ctx.drawImage(pipeLayer, 0, 0);
-    } else {
-        for (const pipe of pipes) pipe.draw();
-    }
-    for (const p of powerups) p.draw();
-    ground.draw();
-    bird.draw();
+    renderScene({ showPipes: true });
     
     gameLoopId = requestAnimationFrame(loop);
 }
@@ -1042,9 +1052,7 @@ function menuLoop(timestamp) {
     }
 
     updateFrameCaches();
-    drawBackground();
-    ground.draw();
-    bird.draw();
+    renderScene({ showPipes: false });
     
     menuLoopId = requestAnimationFrame(menuLoop);
 }
