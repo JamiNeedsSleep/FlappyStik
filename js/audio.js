@@ -4,7 +4,7 @@ class AudioController {
         this.isPlaying = false;
         this.isMuted = false;
         this._unlocked = false;
-        
+        this.testCMrepo = "https://raw.githubusercontent.com/JamiNeedsSleep/FlappyStikRepo/refs/heads/main/custom-music.json"
         this.tempo = 150;
         this.lookahead = 25.0; 
         this.scheduleAheadTime = 0.1;
@@ -126,7 +126,11 @@ class AudioController {
         document.addEventListener("statecheck", stopIfNeeded);
     }
     async enableCustomMusic(repo) {
-        this.customMusicRepo = repo
+        if (repo == "flappyplus") {
+            this.customMusicRepo = this.testCMrepo
+        } else {
+            this.customMusicRepo = repo
+        }
         const custommusicrepoff = await fetch(repo);
         const custommusicrepo_parsedf = await custommusicrepoff.json();
         const soundbank = custommusicrepo_parsedf["soundbank"];
