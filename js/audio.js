@@ -183,12 +183,12 @@ class AudioController {
         this.stopMusic();
         
         this.currentMelody = this.melodies.GAME;
-        this.isPlaying = true;
         this.musicCurrentlyPlaying = "Game"
         document.dispatchEvent(new Event("statecheckrep"));
         if (this.customGameMusicID != "") {
             return;
         }
+        this.isPlaying = true;
         this.noteIndex = 0;
         this.nextNoteTime = this.ctx.currentTime + 0.1;
         this.scheduler();
@@ -200,12 +200,12 @@ class AudioController {
         this.stopMusic();
 
         this.currentMelody = this.melodies.TITLE;
-        this.isPlaying = true;
         this.musicCurrentlyPlaying = "Menu"
-        document.dispatchEvent(new Event("statecheckrep"));
         if (this.customMenuMusicID != "") {
+            document.dispatchEvent(new Event("statecheckrep"));
             return;
         }
+        this.isPlaying = true;
         this.noteIndex = 0;
         this.nextNoteTime = this.ctx.currentTime + 0.1;
         this.scheduler();
