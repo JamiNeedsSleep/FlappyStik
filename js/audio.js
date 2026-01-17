@@ -16,7 +16,7 @@ class AudioController {
         this.silentAudio = new Audio();
         this.silentAudio.src = 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADRm9vYmFyMjAwMAAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgAAAAAAAAAAAAAAJTSVNFAAAAEwAAADAuMS4wLjAgKDAuMS4wLjApAP/7bmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLuAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
         this.silentAudio.volume = 0.01;
-
+        this.replaceMusic = false
         
         this.melodies = {
             TITLE: [],
@@ -122,7 +122,15 @@ class AudioController {
 
         document.addEventListener("statecheck", stopIfNeeded);
     }
-
+    async enableCustomMusic(repo) {
+        const custommusicrepoff = await fetch(repo);
+        const custommusicrepo_parsedf = await custommusicrepoff.json();
+        const soundbank = custommusicrepo_parsedf["soundbank"];
+        for (const [id, sound] of Object.entries(soundbank)) {
+            console.log("ID:", id);
+            console.log("Name:", sound.Name);
+        }
+    }
     scheduler() {
         if (!this.isPlaying) return;
         const secondsPerBeat = 60.0 / this.tempo;
