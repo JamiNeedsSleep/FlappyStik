@@ -119,6 +119,7 @@ class AudioController {
                 mp3Audio.pause();
                 mp3Audio.currentTime = 0;
                 this.isPlaying = false;
+                mp3Audio.src = '';
                 document.removeEventListener("statecheck", stopIfNeeded);
             }
         };
@@ -127,9 +128,9 @@ class AudioController {
     }
     async enableCustomMusic(repo) {
         if (repo == "flappyplus") {
-            this.customMusicRepo = this.testCMrepo
+            this.customMusicRepo = this.testCMrepo;
         } else {
-            this.customMusicRepo = repo
+            this.customMusicRepo = repo;
         }
         const custommusicrepoff = await fetch(this.customMusicRepo);
         const custommusicrepo_parsedf = await custommusicrepoff.json();
@@ -138,10 +139,10 @@ class AudioController {
         for (const [id, sound] of Object.entries(soundbank)) {
             console.log("ID:", id);
             console.log("Name:", sound.Name);
-            this.soundbankReplaceLocal.push(id + "-" + sound.PlayInsteadOf)
+            this.soundbankReplaceLocal.push(id + "-" + sound.PlayInsteadOf);
         }
         this.soundbankReplaceLocal.forEach((comstring) => {
-                var tempstr = comstring.split("-")
+                var tempstr = comstring.split("-");
                 var tempID = tempstr[0]
                 var tempReplacer = tempstr[1]
                 if (tempReplacer == "background") {
