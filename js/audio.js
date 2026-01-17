@@ -105,7 +105,7 @@ class AudioController {
     async playMP3(custommusicrepo, musicid, loop = false) {
         if (this.isMuted || this.gameState === 'GAMEOVER' || this.isPlaying) return;
         const custommusicrepof = await fetch(custommusicrepo);
-        const custommusicrepo_parsed = awaitcustommusicrepof.json();
+        const custommusicrepo_parsed = await awaitcustommusicrepof.json();
         const mp3Audio = new Audio(custommusicrepo_parsed["soundbank"][musicid].Source);
         mp3Audio.volume = 1;
         mp3Audio.loop = loop;
