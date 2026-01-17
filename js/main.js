@@ -893,6 +893,7 @@ async function init() {
     document.getElementById('go-home-btn').addEventListener('click', (e) => {
         e.stopPropagation();
         audioController.stopMusic();
+        gameState = 'START';
         init();
     });
     document.getElementById('go-restart-btn')?.addEventListener('click', (e) => {
