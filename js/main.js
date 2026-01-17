@@ -1,6 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d', { alpha: false });
 
+window.hasCustomAudioHappened = false
 let GRAVITY = 0.42;
 let JUMP = 7.2;
 let SPEED = 3.5;
@@ -848,8 +849,9 @@ async function init() {
     const queryString = window.location.search; 
     const params = new URLSearchParams(queryString);
     const custom = params.get("CM")
-    if (custom == "true") {
+    if (custom == "true" && window.hasCustomAudioHappened != true) {
         const customrepo = params.get("CMrepo")
+        window.hasCustomAudioHappened = true
         await audioController.enableCustomMusic(customrepo)
     }
     resize();
@@ -1071,6 +1073,7 @@ function handleAction(e) {
     }
 
     if (gameState === 'START') {
+        audioController.stopMusic();
         startGame();
     } else if (gameState === 'PLAYING') {
         bird.flap();
@@ -1079,6 +1082,7 @@ function handleAction(e) {
             startLevel(activeLevel);
         } else {
             init();
+            audioController.stopMusic();
             startGame();
         }
     }
@@ -1091,6 +1095,7 @@ window.selectWorld = selectWorld;
 window.init = init;
 window.startGame = startGame;
 window.PowerupSystem = PowerupSystem;
+window.hasCustomAudioHappened = false
 
 document.getElementById('game-wrapper').addEventListener('touchmove', (e) => {
     e.preventDefault();
@@ -1104,11 +1109,11 @@ document.getElementById('go-home-btn').addEventListener('click', (e) => {
 document.getElementById('go-restart-btn').addEventListener('click', (e) => {
     e.stopPropagation();
     init();
+    audioController.stopMusic();
     startGame();
 });
 
 const audioController = new AudioController();
-
 window.addEventListener('resize', resize);
 window.addEventListener('keydown', handleAction);
 
