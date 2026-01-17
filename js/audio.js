@@ -212,6 +212,7 @@ class AudioController {
 
     stopMusic() {
         this.isPlaying = false;
+        document.dispatchEvent(new Event("statecheck"));
         if (this.timerID) clearTimeout(this.timerID);
     }
 
