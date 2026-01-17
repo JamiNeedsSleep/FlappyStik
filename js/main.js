@@ -844,13 +844,13 @@ function updateFps(timestamp) {
     }
 }
 
-function init() {
+async function init() {
     const queryString = window.location.search; 
     const params = new URLSearchParams(queryString);
     const custom = params.get("CM")
     if (custom == "true") {
         const customrepo = params.get("CMrepo")
-        audioController.enableCustomMusic(customrepo)
+        await audioController.enableCustomMusic(customrepo)
     }
     resize();
     initFpsOverlay();
