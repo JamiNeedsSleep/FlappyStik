@@ -856,7 +856,9 @@ async function init() {
     }
     resize();
     initFpsOverlay();
-    audioController.startTitleMusic();
+    if (gameState == "START") {
+        audioController.startTitleMusic();
+    }
     bird.y = canvas.height / 2;
     bird.velocity = 0;
     bird.rotation = 0;
@@ -949,6 +951,7 @@ function gameOver() {
         highScore = score;
         localStorage.setItem(getHighScoreKey(), highScore);
     }
+    audioController.isPlaying = false
     document.dispatchEvent(new Event("statecheck"));
     finalScoreEl.innerText = score;
     bestScoreEl.innerText = highScore;
