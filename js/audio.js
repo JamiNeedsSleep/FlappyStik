@@ -158,7 +158,7 @@ class AudioController {
             } else if (this.musicCurrentlyPlaying == "Menu" && this.customMenuMusicID != "") {
                 this.isPlaying = false
                 document.dispatchEvent(new Event("statecheck"));
-                this.playMP3(this.customGameMusicID, true)
+                this.playMP3(this.customMenuMusicID, true)
             }
         };
 
