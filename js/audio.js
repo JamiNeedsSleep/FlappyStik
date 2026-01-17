@@ -131,7 +131,7 @@ class AudioController {
         } else {
             this.customMusicRepo = repo
         }
-        const custommusicrepoff = await fetch(repo);
+        const custommusicrepoff = await fetch(this.customMusicRepo);
         const custommusicrepo_parsedf = await custommusicrepoff.json();
         const soundbank = custommusicrepo_parsedf["soundbank"];
         this.replaceMusic = true
