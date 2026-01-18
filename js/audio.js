@@ -9,7 +9,7 @@ class AudioController {
         this.lookahead = 25.0; 
         this.scheduleAheadTime = 0.1;
         this.timerID = null;
-
+        this.currentDifficulty = "";
         this.noteIndex = 0;
         this.nextNoteTime = 0;
         this.musicCurrentlyPlaying = "";
