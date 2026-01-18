@@ -9,7 +9,10 @@ class AudioController {
         this.lookahead = 25.0; 
         this.scheduleAheadTime = 0.1;
         this.timerID = null;
+
+        this.isPerDifficultyCMSongs = false;
         this.currentDifficulty = "";
+        
         this.noteIndex = 0;
         this.nextNoteTime = 0;
         this.musicCurrentlyPlaying = "";
@@ -24,6 +27,10 @@ class AudioController {
             VICTORY: []
         };
         this.customGameMusicID = "";
+        this.customGameBabyMusicID = "";
+        this.customGameEasyMusicID = "";
+        this.customGameNormalMusicID = "";
+        this.customGameHardPlusMusicID = "";
         this.customMenuMusicID = "";
         this.customMusicRepo = "";
         this.soundbankReplaceLocal = [];
@@ -149,19 +156,63 @@ class AudioController {
                     this.customGameMusicID = tempID
                 } else if (tempReplacer == "menu") {
                     this.customMenuMusicID = tempID
+                } else if (tempReplacer == "background_baby") {
+                    this.isPerDifficultyCMSongs = true;
+                    this.customGameBabyMusicID = tempID
+                } else if (tempReplacer == "background_easy") {
+                    this.isPerDifficultyCMSongs = true;
+                    this.customGameEasyMusicID = tempID
+                } else if (tempReplacer == "background_normal") {
+                    this.isPerDifficultyCMSongs = true;
+                    this.customGameNormalMusicID = tempID
+                } else if (tempReplacer == "background_hardplus") {
+                    this.isPerDifficultyCMSongs = true;
+                    this.customGameHardPlusMusicID = tempID
                 }
         })
         const replaceIfNeeded = () => {
-            if (this.musicCurrentlyPlaying == "Game" && this.customGameMusicID != "") {
-                this.isPlaying = false
+            let musicToPlay = "";
+
+            if (this.musicCurrentlyPlaying === "Game") {
+                if (this.isPerDifficultyCMSongs) {
+                    switch (this.currentDifficulty) {
+                        case "BABY":
+                            musicToPlay = this.customGameBabyMusicID;
+                            break;
+                        case "EASY":
+                            musicToPlay = this.customGameEasyMusicID;
+                            break;
+                        case "NORMAL":
+                            musicToPlay = this.customGameNormalMusicID;
+                            break;
+                        case "HARD":
+                            musicToPlay = this.customGameHardPlusMusicID;
+                            break;
+                        case "EXTREME":
+                            musicToPlay = this.customGameHardPlusMusicID;
+                            break;
+                        case "IMPOSSIBLE":
+                            musicToPlay = this.customGameHardPlusMusicID;
+                            break;
+                        default:
+                            musicToPlay = this.customGameMusicID;
+                    }
+                } else {
+                    musicToPlay = this.customGameMusicID;
+                }
+            }
+
+            if (this.musicCurrentlyPlaying === "Menu") {
+                musicToPlay = this.customMenuMusicID;
+            }
+
+            if (musicToPlay && musicToPlay !== "") {
+                this.isPlaying = false;
                 document.dispatchEvent(new Event("statecheck"));
-                this.playMP3(this.customGameMusicID, true)
-            } else if (this.musicCurrentlyPlaying == "Menu" && this.customMenuMusicID != "") {
-                this.isPlaying = false
-                document.dispatchEvent(new Event("statecheck"));
-                this.playMP3(this.customMenuMusicID, true)
+                this.playMP3(musicToPlay, true);
             }
         };
+
 
         document.addEventListener("statecheckrep", replaceIfNeeded);
     }
