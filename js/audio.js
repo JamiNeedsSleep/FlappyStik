@@ -207,8 +207,7 @@ class AudioController {
             }
 
             if (musicToPlay && musicToPlay !== "") {
-                this.isPlaying = false;
-                document.dispatchEvent(new Event("statecheck"));
+                this.stopMusic()
                 this.playMP3(musicToPlay, true);
             }
         };
@@ -236,7 +235,7 @@ class AudioController {
         this.currentMelody = this.melodies.GAME;
         this.musicCurrentlyPlaying = "Game"
         document.dispatchEvent(new Event("statecheckrep"));
-        if (this.customGameMusicID != "") {
+        if (this.customGameMusicID != "" || this.customGameEasyMusicID != "" && this.currentDifficulty == "EASY" || this.customGameBabyMusicID != "" && this.currentDifficulty == "BABY" || this.customGameNormalMusicID != "" && this.currentDifficulty == "NORMAL" || this.customGameHardPlusMusicID != "" && this.currentDifficulty == "HARD" || this.customGameHardPlusMusicID != "" && this.currentDifficulty == "EXTREME" || this.customGameHardPlusMusicID != "" && this.currentDifficulty == "IMPOSSIBLE") {
             return;
         }
         this.isPlaying = true;
