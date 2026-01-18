@@ -128,6 +128,7 @@ function setDifficulty(level) {
     }
     
     currentDifficulty = level;
+    audioController.currentDifficulty = level;
     GRAVITY = config.gravity;
     JUMP = config.jump;
     SPEED = config.speed;
